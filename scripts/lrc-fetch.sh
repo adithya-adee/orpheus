@@ -12,7 +12,7 @@ title="${TITLE:-}"; artist="${ARTIST:-}"; album="${ALBUM:-}"; dur="${DURATION:-}
 
 slug="$(printf '%s - %s' "${artist:-Unknown}" "$title" | tr '/:' '__')"
 out="$LYR/$slug.lrc"
-[ -s "$out" ] && exit 0   # already cached
+[ -s "$out" ] && { echo cached; exit 0; }   # already cached
 
 durarg=()
 [[ "$dur" =~ ^[0-9]+$ ]] && durarg=(--data-urlencode "duration=$dur")
@@ -39,3 +39,4 @@ fi
   [ -n "$album" ] && printf '[al:%s]\n' "$album"
   printf '%s\n' "$synced"
 } > "$out"
+echo fetched

@@ -1,7 +1,7 @@
 # Orpheus
 
 A themed terminal music player — [rmpc](https://github.com/mierak/rmpc) (MPD client)
-dressed up with a blue/white *Frost* theme, vim + ncmpcpp keybindings, one-key
+dressed up with 18 switchable themes (solarized-dark default), vim + ncmpcpp keys, one-key
 YouTube downloads, and synced scrolling lyrics. Named for the Greek musician
 whose song moved gods, beasts, and stones.
 
@@ -16,9 +16,11 @@ whose song moved gods, beasts, and stones.
 ## Install
 
 ```bash
-ln -sf ~/github_repo/orpheus/bin/orpheus             ~/.local/bin/orpheus
-ln -sf ~/github_repo/orpheus/scripts/orpheus-yt      ~/.local/bin/orpheus-yt
-ln -sf ~/github_repo/orpheus/scripts/theme-picker.sh ~/.local/bin/orpheus-theme
+ln -sf ~/github_repo/orpheus/bin/orpheus              ~/.local/bin/orpheus
+ln -sf ~/github_repo/orpheus/scripts/orpheus-yt       ~/.local/bin/orpheus-yt
+ln -sf ~/github_repo/orpheus/scripts/theme-picker.sh  ~/.local/bin/orpheus-theme
+ln -sf ~/github_repo/orpheus/scripts/lyrics-sync.sh   ~/.local/bin/orpheus-lyrics
+ln -sf ~/github_repo/orpheus/scripts/set-music-dir.sh ~/.local/bin/orpheus-dir
 orpheus --version    # Orpheus 1.0.0
 orpheus
 ```
@@ -52,25 +54,48 @@ modal opens to pick an existing playlist **or type a new name to create one**,
 and the song is added there. Browse and load playlists in the **Playlists** tab
 (`6`); save the whole current queue as a playlist with `Ctrl-s a`.
 
-## Lyrics
+## Lyrics (cached)
 
-`scripts/lrc-fetch.sh` runs on every song change (rmpc `on_song_change`), pulls
-synced `.lrc` from [LRCLIB](https://lrclib.net) into `~/.lyrics`, and rmpc
-scrolls them in time in the Lyrics pane.
+On every song change `scripts/lrc-fetch.sh` (rmpc `on_song_change`) checks
+`~/.lyrics/`: on a **hit** it just renders (no network), on a **miss** it
+fetches synced `.lrc` from [LRCLIB](https://lrclib.net) and saves it. rmpc
+scrolls them in time in the Lyrics pane. It's a persistent cache keyed by
+artist+title.
+
+Pre-warm the whole library so lyrics are instant before you ever press play:
+
+```bash
+orpheus-lyrics            # scan the library, fetch all, report succeeded/failed
+orpheus-lyrics /some/dir  # or a specific folder
+```
 
 ## Themes
 
 Press **`t`** to open the theme picker — an fzf list you navigate with ↑/↓ or
 **j/k**; each theme previews **live** on the window (rmpc IPC, no restart),
-Enter keeps it, Esc reverts. The **Config** tab (`9`) lists the catalog. The
-*Frost* blue/white default is `theme.ron` and every session starts on it; 12
-base16 themes live in `themes/`.
+Enter keeps it, Esc reverts. Your choice is **remembered across launches** and
+shown in the **Config** tab (`9`). Default is **solarized-dark**.
+
+18 themes ship (Frost blue/white + 17 base16): solarized, gruvbox, dracula,
+monokai, nord, everforest, catppuccin, rose-pine, ayu, onedark … Each spreads
+the palette across multiple hues (blue borders · warm selection · accent
+artist) so they're genuinely distinct — not all blue.
 
 ```bash
+orpheus-theme                                    # the picker, from a shell
 scripts/theme-switch.sh dracula                  # jump straight to one
-scripts/fetch-themes.sh                          # (re)build the base16 catalog
 scripts/base16-to-orpheus.sh scheme.yaml mytheme # convert any base16 scheme
-ORPHEUS_THEME=dracula orpheus                    # or choose at launch
+ORPHEUS_THEME=dracula orpheus                    # force one at launch
+```
+
+## Music directory
+
+Point Orpheus at a different folder instead of the whole `~/Music/Music`:
+
+```bash
+orpheus-dir ~/Music/Focus    # switch (backs up config, restarts MPD, re-indexes)
+orpheus-dir --reset          # back to ~/Music/Music
+orpheus-dir                  # show the current directory
 ```
 
 ## Layout

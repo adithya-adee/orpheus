@@ -31,13 +31,14 @@ orpheus
 |-----|--------|-----|--------|
 | `j`/`k` `h`/`l` | move / pane | `1`–`9` | switch tab |
 | `gg` / `G` | top / bottom | `/` `n` `N` | search / next / prev |
-| `<CR>` | play | `<Space>` | add / select |
-| `p` | pause | `>` / `<` | next / prev track |
+| `<CR>` | play | `m` | add / select |
+| `p` `Space` | pause | `>` / `<` | next / prev track |
 | `+`/`-` `.`/`,` | volume | `f` `b` `←` `→` | seek ±5s |
 | `z` `x` `c` `v` | repeat / random / consume / single | `u` | update library |
 | **`y`** | **YouTube add (clipboard URL or query)** | `?` | help |
 | **`P`** | **add song → playlist (existing or new)** | `8` `9` | YouTube / Config tab |
 | **`t`** | **theme picker (j/k, live preview)** | `6` | Playlists tab |
+| **`L`** | **prefetch all lyrics** | **`M`** | **pick music folder** |
 
 ## YouTube
 
@@ -62,7 +63,9 @@ fetches synced `.lrc` from [LRCLIB](https://lrclib.net) and saves it. rmpc
 scrolls them in time in the Lyrics pane. It's a persistent cache keyed by
 artist+title.
 
-Pre-warm the whole library so lyrics are instant before you ever press play:
+Pre-warm the whole library so lyrics are instant before you ever press play —
+**press `L` in Orpheus** (opens a progress window with succeeded/failed counts),
+or from a shell:
 
 ```bash
 orpheus-lyrics            # scan the library, fetch all, report succeeded/failed
@@ -90,7 +93,8 @@ ORPHEUS_THEME=dracula orpheus                    # force one at launch
 
 ## Music directory
 
-Point Orpheus at a different folder instead of the whole `~/Music/Music`:
+**Press `M` in Orpheus** to pick a folder from an fzf list, or from a shell
+point it at a different folder instead of the whole `~/Music/Music`:
 
 ```bash
 orpheus-dir ~/Music/Focus    # switch (backs up config, restarts MPD, re-indexes)

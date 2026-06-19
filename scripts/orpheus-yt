@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Orpheus · interactive YouTube download from a terminal.
+#   orpheus-yt "song name artist"      (or just `orpheus-yt` to be prompted)
+# Downloads the top match as SponsorBlock-cleaned mp3 into the library.
+set -euo pipefail
+
+MUSIC_DIR="$HOME/Music/Music"
+mkdir -p "$MUSIC_DIR"
+
+q="${*:-}"
+[ -z "$q" ] && read -rp "YouTube search (or paste a link): " q
+[ -z "$q" ] && exit 0
+
+case "$q" in
+  http*://*) tgt="$q" ;;
+  *)         tgt="ytsearch1:$q" ;;
+esac
+
+yt-dlp --no-playlist -x --audio-format mp3 --audio-quality 0 --embed-metadata \
+  --sponsorblock-remove "sponsor,selfpromo,interaction" \
+  -o "$MUSIC_DIR/%(title)s.%(ext)s" "$tgt"
+
+rmpc update >/dev/null 2>&1 || true
+echo "✓ Added to library (press 'u' in orpheus to refresh)."

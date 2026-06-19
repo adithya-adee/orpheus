@@ -179,24 +179,19 @@
                     default: (kind: Text("No Song"), style: (fg: "#eceff4", modifiers: "Bold"))),
             ], align: Center, scroll_speed: 1
         )),
-        "volume": Split(
-            direction: Horizontal,
-            panes: [
-                (size: "1", pane: Pane(Property(content: [(kind: Text(""))]))),
-                (size: "100%", pane: Pane(Volume(kind: Slider(symbols: (filled: "─", thumb: "●", track: "─"))))),
-                (size: "3", pane: Pane(Property(content: [(kind: Property(Status(Volume)), style: (fg: "#88c0d0"))], align: Right))),
-                (size: "2", pane: Pane(Property(content: [(kind: Text("%"), style: (fg: "#88c0d0"))]))),
-            ]
-        ),
+        "volume": Pane(Property(
+            content: [
+                (kind: Text("vol "), style: (fg: "#81a1c1")),
+                (kind: Property(Status(Volume)), style: (fg: "#88c0d0", modifiers: "Bold")),
+                (kind: Text("%  "), style: (fg: "#88c0d0", modifiers: "Bold")),
+                (kind: Text("−/+"), style: (fg: "#4c566a")),
+            ], align: Right
+        )),
         "elapsed_and_bitrate": Pane(Property(
             content: [
-                (kind: Property(Status(Elapsed))),
-                (kind: Text(" / ")),
-                (kind: Property(Status(Duration))),
                 (kind: Group([
-                    (kind: Text(" (")),
-                    (kind: Property(Status(Bitrate))),
-                    (kind: Text(" kbps)")),
+                    (kind: Property(Status(Bitrate)), style: (fg: "#81a1c1")),
+                    (kind: Text(" kbps"), style: (fg: "#81a1c1")),
                 ])),
             ],
             align: Left,
@@ -291,18 +286,13 @@
         "progress_bar": Split(
             direction: Horizontal,
             panes: [
-                (
-                    size: "1",
-                    pane: Pane(Empty())
-                ),
-                (
-                    size: "100%",
-                    pane: Pane(ProgressBar)
-                ),
-                (
-                    size: "1",
-                    pane: Pane(Empty())
-                ),
+                (size: "1",    pane: Pane(Empty())),
+                (size: "7",    pane: Pane(Property(content: [(kind: Property(Status(Elapsed)), style: (fg: "#88c0d0", modifiers: "Bold"))], align: Right))),
+                (size: "2",    pane: Pane(Empty())),
+                (size: "100%", pane: Pane(ProgressBar)),
+                (size: "2",    pane: Pane(Empty())),
+                (size: "7",    pane: Pane(Property(content: [(kind: Property(Status(Duration)), style: (fg: "#81a1c1"))], align: Left))),
+                (size: "1",    pane: Pane(Empty())),
             ]
         )
     },

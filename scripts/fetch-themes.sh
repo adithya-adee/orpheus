@@ -11,7 +11,8 @@ trap 'rm -rf "$TMP"' EXIT
 
 # Curated set, leaning blue/white plus a few popular favorites.
 THEMES="nord tokyo-night-dark catppuccin-mocha gruvbox-dark-hard dracula \
-solarized-dark onedark ayu-dark rose-pine edge-dark google-dark atelier-forest"
+solarized-dark onedark ayu-dark rose-pine edge-dark google-dark atelier-forest \
+monokai everforest oceanicnext atelier-heath atelier-savanna"
 
 ok=0; fail=0
 for t in $THEMES; do

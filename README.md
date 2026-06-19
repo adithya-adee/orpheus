@@ -16,8 +16,10 @@ whose song moved gods, beasts, and stones.
 ## Install
 
 ```bash
-ln -sf ~/github_repo/orpheus/bin/orpheus        ~/.local/bin/orpheus
-ln -sf ~/github_repo/orpheus/scripts/orpheus-yt ~/.local/bin/orpheus-yt
+ln -sf ~/github_repo/orpheus/bin/orpheus             ~/.local/bin/orpheus
+ln -sf ~/github_repo/orpheus/scripts/orpheus-yt      ~/.local/bin/orpheus-yt
+ln -sf ~/github_repo/orpheus/scripts/theme-picker.sh ~/.local/bin/orpheus-theme
+orpheus --version    # Orpheus 1.0.0
 orpheus
 ```
 

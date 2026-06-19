@@ -5,6 +5,12 @@
 set -euo pipefail
 
 DIR="/home/glitchy_moon/github_repo/orpheus"
+VERSION="$(cat "$DIR/VERSION" 2>/dev/null || echo '?')"
+
+case "${1:-}" in
+  -V|--version) echo "Orpheus $VERSION  ·  $(rmpc version 2>/dev/null || echo rmpc)"; exit 0 ;;
+esac
+
 theme_file="$DIR/theme.ron"
 if [ -n "${ORPHEUS_THEME:-}" ] && [ -f "$DIR/themes/${ORPHEUS_THEME}.ron" ]; then
   theme_file="$DIR/themes/${ORPHEUS_THEME}.ron"

@@ -317,7 +317,7 @@
                 direction: Vertical,
                 panes: [
                     (size: "1",    pane: Pane(Empty())),
-                    (size: "1",    pane: Pane(Property(content: [(kind: Text("⚙  Orpheus — keys & configuration"), style: (fg: "#88c0d0", modifiers: "Bold"))], align: Center))),
+                    (size: "1",    pane: Pane(Property(content: [(kind: Text("⚙  Orpheus v1.0.0 — keys & configuration"), style: (fg: "#88c0d0", modifiers: "Bold"))], align: Center))),
                     (size: "1",    pane: Pane(Empty())),
                     (size: "1",    pane: Pane(Property(content: [(kind: Text("Move  j k h l    ·  Top / Bottom  gg G    ·  Tabs  1-9 / Tab"))], align: Center))),
                     (size: "1",    pane: Pane(Property(content: [(kind: Text("Play  Enter      ·  Add / Select  Space   ·  Search  /  n  N"))], align: Center))),

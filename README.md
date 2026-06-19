@@ -27,14 +27,14 @@ orpheus
 
 | Key | Action | Key | Action |
 |-----|--------|-----|--------|
-| `j`/`k` `h`/`l` | move / pane | `1`–`0` | switch tab |
+| `j`/`k` `h`/`l` | move / pane | `1`–`9` | switch tab |
 | `gg` / `G` | top / bottom | `/` `n` `N` | search / next / prev |
 | `<CR>` | play | `<Space>` | add / select |
 | `p` | pause | `>` / `<` | next / prev track |
 | `+`/`-` `.`/`,` | volume | `f` `b` `←` `→` | seek ±5s |
 | `z` `x` `c` `v` | repeat / random / consume / single | `u` | update library |
 | **`y`** | **YouTube add (clipboard URL or query)** | `?` | help |
-| **`P`** | **add song → playlist (existing or new)** | `8` `9` `0` | YouTube / Config / Themes tab |
+| **`P`** | **add song → playlist (existing or new)** | `8` `9` | YouTube / Config tab |
 | **`t`** | **theme picker (j/k, live preview)** | `6` | Playlists tab |
 
 ## YouTube
@@ -62,7 +62,7 @@ scrolls them in time in the Lyrics pane.
 
 Press **`t`** to open the theme picker — an fzf list you navigate with ↑/↓ or
 **j/k**; each theme previews **live** on the window (rmpc IPC, no restart),
-Enter keeps it, Esc reverts. The **Themes** tab (`0`) shows the catalog. The
+Enter keeps it, Esc reverts. The **Config** tab (`9`) lists the catalog. The
 *Frost* blue/white default is `theme.ron` and every session starts on it; 12
 base16 themes live in `themes/`.
 

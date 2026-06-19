@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Orpheus · synced-lyrics fetcher (run by rmpc via on_song_change).
+# Pulls .lrc lyrics for the current track from LRCLIB into ~/.lyrics so rmpc's
+# lyrics pane can scroll them in time. Best-effort and silent on a miss.
+set -uo pipefail
+
+LYR="$HOME/.lyrics"
+mkdir -p "$LYR"
+
+title="${TITLE:-}"; artist="${ARTIST:-}"; album="${ALBUM:-}"; dur="${DURATION:-}"
+[ -z "$title" ] && exit 0
+
+slug="$(printf '%s - %s' "${artist:-Unknown}" "$title" | tr '/:' '__')"
+out="$LYR/$slug.lrc"
+[ -s "$out" ] && exit 0   # already cached
+
+durarg=()
+[[ "$dur" =~ ^[0-9]+$ ]] && durarg=(--data-urlencode "duration=$dur")
+
+resp="$(curl -fsG 'https://lrclib.net/api/get' \
+  --data-urlencode "artist_name=$artist" \
+  --data-urlencode "track_name=$title" \
+  --data-urlencode "album_name=$album" \
+  "${durarg[@]}" 2>/dev/null)" || resp=""
+
+synced="$(printf '%s' "$resp" | jq -r '.syncedLyrics // empty' 2>/dev/null)" || synced=""
+
+if [ -z "$synced" ]; then
+  synced="$(curl -fsG 'https://lrclib.net/api/search' \
+    --data-urlencode "artist_name=$artist" \
+    --data-urlencode "track_name=$title" 2>/dev/null \
+    | jq -r '[.[] | select(.syncedLyrics != null)][0].syncedLyrics // empty' 2>/dev/null)" || synced=""
+fi
+
+[ -z "$synced" ] && exit 0
+
+{
+  printf '[ar:%s]\n[ti:%s]\n' "$artist" "$title"
+  [ -n "$album" ] && printf '[al:%s]\n' "$album"
+  printf '%s\n' "$synced"
+} > "$out"

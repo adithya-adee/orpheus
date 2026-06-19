@@ -15,6 +15,11 @@ note() {
   printf '%s %s\n' "$(date '+%F %T')" "$1" >> "$LOG"
 }
 
+# Fail loudly (and visibly) if a required tool is missing.
+for dep in yt-dlp xclip rmpc; do
+  command -v "$dep" >/dev/null 2>&1 || { note "missing dependency: $dep — install it and retry."; exit 1; }
+done
+
 clip="$(xclip -selection clipboard -o 2>/dev/null | tr -d '\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
 if [ -z "$clip" ]; then
   note "Clipboard empty — copy a YouTube link (or a song name), then press y."

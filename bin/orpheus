@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Orpheus — a themed rmpc front-end (blue/white, vim + ncmpcpp keys, YouTube,
+# synced lyrics). Pick an alternate palette with ORPHEUS_THEME=<name>:
+#   ORPHEUS_THEME=dracula orpheus
+set -euo pipefail
+
+DIR="/home/glitchy_moon/github_repo/orpheus"
+theme_file="$DIR/theme.ron"
+if [ -n "${ORPHEUS_THEME:-}" ] && [ -f "$DIR/themes/${ORPHEUS_THEME}.ron" ]; then
+  theme_file="$DIR/themes/${ORPHEUS_THEME}.ron"
+fi
+
+exec rmpc -c "$DIR/config.ron" -t "$theme_file" "$@"

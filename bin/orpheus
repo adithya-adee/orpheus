@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Orpheus — a themed rmpc front-end (blue/white, vim + ncmpcpp keys, YouTube,
-# synced lyrics). Pick an alternate palette with ORPHEUS_THEME=<name>:
-#   ORPHEUS_THEME=dracula orpheus
+# Orpheus — a themed rmpc front-end (vim + ncmpcpp keys, YouTube, synced lyrics).
+# Remembers your last theme across launches; default is solarized-dark.
+# Force one with:  ORPHEUS_THEME=dracula orpheus
 set -euo pipefail
 
 DIR="/home/glitchy_moon/github_repo/orpheus"
@@ -11,14 +11,21 @@ case "${1:-}" in
   -V|--version) echo "Orpheus $VERSION  ·  $(rmpc version 2>/dev/null || echo rmpc)"; exit 0 ;;
 esac
 
-theme_file="$DIR/theme.ron"
-if [ -n "${ORPHEUS_THEME:-}" ] && [ -f "$DIR/themes/${ORPHEUS_THEME}.ron" ]; then
-  theme_file="$DIR/themes/${ORPHEUS_THEME}.ron"
-fi
+STATE="$HOME/.cache/orpheus-theme"
+RUNTIME="$HOME/.cache/orpheus/config.ron"
 
-# Start each session on the chosen theme (Frost by default) so the runtime
-# picker/cycle always begins from a known baseline.
-mkdir -p "$HOME/.cache"
-printf '%s\n' "${ORPHEUS_THEME:-frost}" > "$HOME/.cache/orpheus-theme"
+# Theme: explicit env  >  remembered (last used)  >  default (solarized-dark).
+name="${ORPHEUS_THEME:-$(cat "$STATE" 2>/dev/null || true)}"
+name="${name:-solarized-dark}"
+theme_path() { if [ "$1" = frost ]; then echo "$DIR/theme.ron"; else echo "$DIR/themes/$1.ron"; fi; }
+tf="$(theme_path "$name")"
+[ -f "$tf" ] || { name="solarized-dark"; tf="$(theme_path "$name")"; }
+[ -f "$tf" ] || { name="frost"; tf="$DIR/theme.ron"; }
 
-exec rmpc -c "$DIR/config.ron" -t "$theme_file" "$@"
+# Remember the choice, and stamp it into a runtime config copy so the Config
+# tab can show the current theme (keeps the committed config.ron clean).
+mkdir -p "$HOME/.cache/orpheus"
+printf '%s\n' "$name" > "$STATE"
+sed "s/__THEME__/$name/g" "$DIR/config.ron" > "$RUNTIME"
+
+exec rmpc -c "$RUNTIME" -t "$tf" "$@"

@@ -27,7 +27,7 @@ list() { printf 'frost\n'; ls "$DIR"/themes/*.ron 2>/dev/null | xargs -n1 basena
 # Live preview on highlight needs fzf >= 0.30 (the `focus` event); degrade if older.
 ver="$(fzf --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+' | head -1)"
 focus=()
-awk "BEGIN{exit !(${ver:-0} >= 0.30)}" 2>/dev/null && focus=(--bind="focus:execute-silent($SW {} >/dev/null 2>&1)")
+awk "BEGIN{exit !(${ver:-0} >= 0.30)}" 2>/dev/null && focus=(--bind="focus:execute-silent($SW --preview {} >/dev/null 2>&1)")
 
 sel="$(list | fzf \
   --prompt='theme ❯ ' --layout=reverse --height=100% --cycle \

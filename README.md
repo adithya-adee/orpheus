@@ -32,6 +32,8 @@ orpheus
 | `+`/`-` `.`/`,` | volume | `f` / `b` | seek |
 | `z` `x` `c` `v` | repeat / random / consume / single | `u` | update library |
 | **`y`** | **YouTube add (clipboard URL or query)** | `?` | help |
+| **`P`** | **add song → playlist (existing or new)** | `8` `9` `0` | YouTube / Config / Themes tab |
+| **`t`** / **`T`** | **next / previous theme (live)** | `6` | Playlists tab |
 
 ## YouTube
 
@@ -41,6 +43,13 @@ orpheus
 - No browser is involved, so there is **no ad/malvertising surface**; sponsor
   segments are stripped with `--sponsorblock-remove`.
 
+## Playlists (Spotify-style add-to-playlist)
+
+Highlight any song (in Artists / Albums / Search / Queue) and press **`P`** — a
+modal opens to pick an existing playlist **or type a new name to create one**,
+and the song is added there. Browse and load playlists in the **Playlists** tab
+(`6`); save the whole current queue as a playlist with `Ctrl-s a`.
+
 ## Lyrics
 
 `scripts/lrc-fetch.sh` runs on every song change (rmpc `on_song_change`), pulls
@@ -49,13 +58,15 @@ scrolls them in time in the Lyrics pane.
 
 ## Themes
 
-The *Frost* (blue/white) theme is `theme.ron`. The whole base16 family (what
-termusic ships) can be generated into `themes/`:
+Open the **Themes** tab (`0`) to see the catalog, then press **`t`** / **`T`**
+to cycle themes **live** — applied instantly via rmpc IPC, no restart. The
+*Frost* blue/white default is `theme.ron`; 12 base16 themes live in `themes/`.
 
 ```bash
-scripts/fetch-themes.sh                          # build the curated catalog
+scripts/theme-switch.sh dracula                  # jump straight to one
+scripts/fetch-themes.sh                          # (re)build the base16 catalog
 scripts/base16-to-orpheus.sh scheme.yaml mytheme # convert any base16 scheme
-ORPHEUS_THEME=dracula orpheus                    # launch with an alternate
+ORPHEUS_THEME=dracula orpheus                    # or choose at launch
 ```
 
 ## Layout

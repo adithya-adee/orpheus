@@ -8,6 +8,18 @@ set -uo pipefail
 DIR="/home/glitchy_moon/github_repo/orpheus"
 FETCH="$DIR/scripts/lrc-fetch.sh"
 
+# Triggered from a keybind (no terminal)? Open one so progress is visible.
+if [ ! -t 0 ]; then
+  for term in "${TERMINAL:-}" kitty gnome-terminal alacritty wezterm xterm; do
+    [ -n "$term" ] && command -v "$term" >/dev/null 2>&1 || continue
+    case "$term" in
+      gnome-terminal) exec env ORPHEUS_POPUP=1 "$term" --title "Orpheus · Lyrics" -- "$0" "$@" ;;
+      *)              exec env ORPHEUS_POPUP=1 "$term" -e "$0" "$@" ;;
+    esac
+  done
+  exit 0
+fi
+
 # Resolve the music dir: explicit arg → MPD config → default.
 music="${1:-}"
 if [ -z "$music" ]; then
@@ -47,3 +59,4 @@ echo "Done — $total tracks:"
 echo "  ✓ $((new + cached)) have lyrics   ($new newly fetched, $cached already cached)"
 echo "  ✗ $fail without synced lyrics on LRCLIB"
 echo "Cache: ~/.lyrics/"
+[ -n "${ORPHEUS_POPUP:-}" ] && { echo; read -rp "Press Enter to close…" _; }

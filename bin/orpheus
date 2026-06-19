@@ -10,4 +10,9 @@ if [ -n "${ORPHEUS_THEME:-}" ] && [ -f "$DIR/themes/${ORPHEUS_THEME}.ron" ]; the
   theme_file="$DIR/themes/${ORPHEUS_THEME}.ron"
 fi
 
+# Start each session on the chosen theme (Frost by default) so the runtime
+# picker/cycle always begins from a known baseline.
+mkdir -p "$HOME/.cache"
+printf '%s\n' "${ORPHEUS_THEME:-frost}" > "$HOME/.cache/orpheus-theme"
+
 exec rmpc -c "$DIR/config.ron" -t "$theme_file" "$@"

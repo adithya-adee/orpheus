@@ -72,8 +72,7 @@
             "8":          SwitchToTab("YouTube"),
             "9":          SwitchToTab("Config"),
             "0":          SwitchToTab("Themes"),
-            "t":          ExternalCommand(command: ["/home/glitchy_moon/github_repo/orpheus/scripts/theme-switch.sh", "next"], description: "Next theme"),
-            "T":          ExternalCommand(command: ["/home/glitchy_moon/github_repo/orpheus/scripts/theme-switch.sh", "prev"], description: "Previous theme"),
+            "t":          ExternalCommand(command: ["/home/glitchy_moon/github_repo/orpheus/scripts/theme-picker.sh"], description: "Open theme picker (j/k, live preview)"),
             "u":          Update,
             "<C-u>":      Update,
             "<C-U>":      Rescan,
@@ -342,7 +341,7 @@
                 direction: Vertical,
                 panes: [
                     (size: "2",    pane: Pane(Empty())),
-                    (size: "1",    pane: Pane(Property(content: [(kind: Text("🎨  Themes  —  press  t  next  ·  T  previous   (applies instantly)"), style: (fg: "#88c0d0", modifiers: "Bold"))], align: Center))),
+                    (size: "1",    pane: Pane(Property(content: [(kind: Text("🎨  Themes  —  press  t  to open the picker  (↑/↓ or j/k · live preview)"), style: (fg: "#88c0d0", modifiers: "Bold"))], align: Center))),
                     (size: "2",    pane: Pane(Empty())),
                     (size: "1",    pane: Pane(Property(content: [(kind: Text("frost (blue/white)  ·  nord  ·  tokyo-night-dark  ·  catppuccin-mocha"))], align: Center))),
                     (size: "1",    pane: Pane(Property(content: [(kind: Text("dracula  ·  ayu-dark  ·  onedark  ·  gruvbox-dark-hard  ·  solarized-dark"))], align: Center))),

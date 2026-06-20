@@ -21,7 +21,8 @@ ln -sf ~/github_repo/orpheus/scripts/orpheus-yt       ~/.local/bin/orpheus-yt
 ln -sf ~/github_repo/orpheus/scripts/theme-picker.sh  ~/.local/bin/orpheus-theme
 ln -sf ~/github_repo/orpheus/scripts/lyrics-sync.sh   ~/.local/bin/orpheus-lyrics
 ln -sf ~/github_repo/orpheus/scripts/set-music-dir.sh ~/.local/bin/orpheus-dir
-ln -sf ~/github_repo/orpheus/scripts/orpheus-setup.sh ~/.local/bin/orpheus-setup
+ln -sf ~/github_repo/orpheus/scripts/orpheus-setup.sh   ~/.local/bin/orpheus-setup
+ln -sf ~/github_repo/orpheus/scripts/album-art-fetch.sh ~/.local/bin/orpheus-art
 orpheus --version    # Orpheus 1.1.0
 orpheus
 orpheus-setup        # (optional, one-time) media keys, scrobbling, Discord, Cava
@@ -64,7 +65,7 @@ and the song is added there. Browse and load playlists in the **Playlists** tab
 
 On every song change `scripts/lrc-fetch.sh` (rmpc `on_song_change`) checks
 `~/.lyrics/`: on a **hit** it just renders (no network), on a **miss** it
-fetches synced `.lrc` from [LRCLIB](https://lrclib.net) and saves it. rmpc
+fetches synced (or plain, as a fallback) `.lrc` from [LRCLIB](https://lrclib.net) and saves it. rmpc
 scrolls them in time in the Lyrics pane. It's a persistent cache keyed by
 artist+title.
 
@@ -117,6 +118,7 @@ orpheus-dir                  # show the current directory
 | `=` | Crossfade | toggle smooth 5s blends between tracks |
 | `gs` | Stats | your most-played tracks + totals |
 | `V` | Visualizer | Cava spectrum tab (needs `cava`) |
+| `gA` | Album art | fetch & embed missing covers (Cover Art Archive); confirms first |
 
 Play counts, ❤ favorites and now-playing **desktop notifications** (with cover
 art) happen automatically on song change. **ReplayGain** loudness normalization

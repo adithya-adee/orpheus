@@ -24,19 +24,24 @@ resp="$(curl -fsG 'https://lrclib.net/api/get' \
   "${durarg[@]}" 2>/dev/null)" || resp=""
 
 synced="$(printf '%s' "$resp" | jq -r '.syncedLyrics // empty' 2>/dev/null)" || synced=""
+plain="$( printf '%s' "$resp" | jq -r '.plainLyrics  // empty' 2>/dev/null)" || plain=""
 
-if [ -z "$synced" ]; then
-  synced="$(curl -fsG 'https://lrclib.net/api/search' \
+# Fall back to the search endpoint, preferring synced, then plain.
+if [ -z "$synced" ] && [ -z "$plain" ]; then
+  sresp="$(curl -fsG 'https://lrclib.net/api/search' \
     --data-urlencode "artist_name=$artist" \
-    --data-urlencode "track_name=$title" 2>/dev/null \
-    | jq -r '[.[] | select(.syncedLyrics != null)][0].syncedLyrics // empty' 2>/dev/null)" || synced=""
+    --data-urlencode "track_name=$title" 2>/dev/null)" || sresp=""
+  synced="$(printf '%s' "$sresp" | jq -r '[.[] | select(.syncedLyrics != null)][0].syncedLyrics // empty' 2>/dev/null)" || synced=""
+  [ -z "$synced" ] && plain="$(printf '%s' "$sresp" | jq -r '[.[] | select(.plainLyrics != null)][0].plainLyrics // empty' 2>/dev/null)" || true
 fi
 
-[ -z "$synced" ] && exit 0
+# Prefer timed lyrics; otherwise save plain (displayed without scrolling).
+body="${synced:-$plain}"
+[ -z "$body" ] && exit 0
 
 {
   printf '[ar:%s]\n[ti:%s]\n' "$artist" "$title"
   [ -n "$album" ] && printf '[al:%s]\n' "$album"
-  printf '%s\n' "$synced"
+  printf '%s\n' "$body"
 } > "$out"
 echo fetched

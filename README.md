@@ -21,8 +21,10 @@ ln -sf ~/github_repo/orpheus/scripts/orpheus-yt       ~/.local/bin/orpheus-yt
 ln -sf ~/github_repo/orpheus/scripts/theme-picker.sh  ~/.local/bin/orpheus-theme
 ln -sf ~/github_repo/orpheus/scripts/lyrics-sync.sh   ~/.local/bin/orpheus-lyrics
 ln -sf ~/github_repo/orpheus/scripts/set-music-dir.sh ~/.local/bin/orpheus-dir
-orpheus --version    # Orpheus 1.0.0
+ln -sf ~/github_repo/orpheus/scripts/orpheus-setup.sh ~/.local/bin/orpheus-setup
+orpheus --version    # Orpheus 1.1.0
 orpheus
+orpheus-setup        # (optional, one-time) media keys, scrobbling, Discord, Cava
 ```
 
 ## Keybindings (vim + ncmpcpp)
@@ -39,6 +41,9 @@ orpheus
 | **`P`** | **add song → playlist (existing or new)** | `8` `9` | YouTube / Config tab |
 | **`t`** | **theme picker (j/k, live preview)** | `6` | Playlists tab |
 | **`L`** | **prefetch all lyrics** | **`M`** | **pick music folder** |
+| **`*`** | **favorite ❤** | **`S`** | **smart queues** |
+| **`Z`** | **sleep timer** | **`=`** | **crossfade** |
+| **`gs`** | **listening stats** | **`V`** | **visualizer** |
 
 ## YouTube
 
@@ -101,6 +106,32 @@ orpheus-dir ~/Music/Focus    # switch (backs up config, restarts MPD, re-indexes
 orpheus-dir --reset          # back to ~/Music/Music
 orpheus-dir                  # show the current directory
 ```
+
+## More features
+
+| Key | Feature | What it does |
+|-----|---------|--------------|
+| `*` | Favorite ❤ | mark the current track (MPD sticker); queue them via `S` → Favorites |
+| `S` | Smart queues | Favorites · Most played · Never played · Random mix · Shuffle everything |
+| `Z` | Sleep timer | pause after 15 / 30 / 45 / 60 / 90 min |
+| `=` | Crossfade | toggle smooth 5s blends between tracks |
+| `gs` | Stats | your most-played tracks + totals |
+| `V` | Visualizer | Cava spectrum tab (needs `cava`) |
+
+Play counts, ❤ favorites and now-playing **desktop notifications** (with cover
+art) happen automatically on song change. **ReplayGain** loudness normalization
+is enabled in `mpd.conf`.
+
+### One-time setup — media keys, scrobbling, Discord
+
+```bash
+orpheus-setup
+```
+Installs `cava` / `mpdris2` / `mpdscribble` (asks for sudo), then:
+- **Media keys** — play/pause/next from your keyboard anywhere (MPRIS). Live immediately.
+- **Scrobbling** (Last.fm / ListenBrainz) — add credentials to
+  `~/.mpdscribble/mpdscribble.conf`, then `systemctl --user enable --now mpdscribble`.
+- **Discord Rich Presence** — with Discord open, `systemctl --user enable --now mpd-discord-rpc`.
 
 ## Layout
 
